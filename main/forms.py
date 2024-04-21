@@ -18,7 +18,7 @@ class SendingForm(StyleFormMixin, forms.ModelForm):
     # весь необходимый функционал, который нужно настроить
     class Meta:
         model = Sending
-        exclude = ('sent_at', 'status', 'owner', 'start_at',)
+        exclude = ('sent_at', 'status', 'owner', )
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):

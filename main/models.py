@@ -13,6 +13,8 @@ class Client(models.Model):
     email = models.EmailField(unique=True, verbose_name='почта')
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     comment = models.CharField(max_length=100, verbose_name='комментарий', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь',
+                              **NULLABLE)
 
     def __str__(self):
         return f'{self.name} {self.email}'
@@ -26,6 +28,8 @@ class Client(models.Model):
 class Message(models.Model):
     theme = models.CharField(max_length=100, verbose_name='тема письма')
     text = models.TextField(verbose_name='тело письма')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь',
+                              **NULLABLE)
 
     def __str__(self):
         return f'{self.theme}'
