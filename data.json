@@ -68,8 +68,24 @@
     "model": "main.sending",
     "pk": 1,
     "fields": {
-      "message": Message.objects.get(theme="Тест"),
-      "clients": Client.objects.all()
+      "message": 3,
+      "clients": [1, 2]
+    }
+  },
+  {
+    "model": "main.sending",
+    "pk": 2,
+    "fields": {
+      "message": 2,
+      "clients": [4]
+    }
+  },
+  {
+    "model": "main.sending",
+    "pk": 3,
+    "fields": {
+      "message": 1,
+      "clients": []
     }
   }
 ]

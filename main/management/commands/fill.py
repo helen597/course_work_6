@@ -22,9 +22,14 @@ class Command(BaseCommand):
                 clients_to_create.append(Client(**item['fields']))
             elif item["model"] == "main.message":
                 messages_to_create.append(Message(**item['fields']))
-            elif item["model"] == "main.sending":
-                sendings_to_create.append(Sending(**item['fields']))
 
         Client.objects.bulk_create(clients_to_create)
+        print(clients_to_create)
         Message.objects.bulk_create(messages_to_create)
+        print(messages_to_create)
+
+        for item in data:
+            if item["model"] == "main.sending":
+                sendings_to_create.append(Sending(**item['fields']))
+
         Sending.objects.bulk_create(sendings_to_create)

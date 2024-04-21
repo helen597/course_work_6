@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% load mediapath_tag %}
+{% block content %}
+<div class="col-12 mb-5">
+    {% if perms.main.add_message %}
+        <a class="p-2 btn btn-outline-primary" href="/message/create/">Создать письмо</a>
+    {% endif %}
+    {% for object in object_list %}
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ object.pk }} {{ object.theme }}</h5>
+                    <p class="card-text">{{ object.text }}</p>
+                    <a href="{% url 'main:message_detail' object.pk %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -42,8 +42,8 @@ class Sending(models.Model):
     period = models.CharField(max_length=5, choices=period_choices, default="раз в месяц", verbose_name='периодичность')
     status_choices = {"created": "создана", "executed": "запущена", "finished": "завершена"}
     status = models.CharField(max_length=15, choices=status_choices, default="создана", verbose_name='статус')
-    message = models.ForeignKey("Message", on_delete=models.CASCADE, verbose_name='сообщение')
-    clients = models.ManyToManyField(Client, verbose_name='клиенты')
+    message = models.ForeignKey("Message", on_delete=models.CASCADE, verbose_name='сообщение', **NULLABLE)
+    clients = models.ManyToManyField(Client, verbose_name='клиенты', **NULLABLE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь',
                               **NULLABLE)
     start_at = models.DateTimeField(default=datetime.now, verbose_name='дата начала')
