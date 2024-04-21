@@ -30,6 +30,7 @@ class Command(BaseCommand):
 
         for item in data:
             if item["model"] == "main.sending":
-                sendings_to_create.append(Sending(**item['fields']))
+                message = Message.objects.get(pk=item['fields']['message'])
+                sendings_to_create.append(Sending(message=message, clients=item['fields']['clients']))
 
         Sending.objects.bulk_create(sendings_to_create)
