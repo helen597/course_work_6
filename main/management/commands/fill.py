@@ -1,5 +1,4 @@
 import os
-
 from django.core.management import BaseCommand
 import json
 import psycopg2
@@ -10,7 +9,7 @@ from main.models import Client, Message, Sending
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
-        connect=psycopg2.connect(dbname=os.getenv('DB_NAME'), user=os.getenv('DB_USER'), password=os.getenv('DB_PASSWORD'))
+        connect = psycopg2.connect(dbname=os.getenv('DB_NAME'), user=os.getenv('DB_USER'), password=os.getenv('DB_PASSWORD'))
         with connect.cursor() as cursor:
             cursor.execute('TRUNCATE TABLE main_message RESTART IDENTITY CASCADE;')
 
