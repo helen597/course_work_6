@@ -1,7 +1,7 @@
 import os
 from django.core.management import BaseCommand
 import json
-import psycopg2
+from django.db import connection
 
 from main.models import Client, Message, Sending
 
@@ -9,8 +9,7 @@ from main.models import Client, Message, Sending
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
-        connect = psycopg2.connect(dbname=os.getenv('DB_NAME'), user=os.getenv('DB_USER'), password=os.getenv('DB_PASSWORD'))
-        with connect.cursor() as cursor:
+        with connection.cursor() as cursor:
             cursor.execute('TRUNCATE TABLE main_message RESTART IDENTITY CASCADE;')
 
         Client.objects.all().delete()
@@ -38,6 +37,9 @@ class Command(BaseCommand):
         for item in data:
             if item["model"] == "main.sending":
                 message = Message.objects.get(pk=item['fields']['message'])
-                sendings_to_create.append(Sending(message=message, clients=item['fields']['clients']))
+                s = Sending(message=message)
+                s.save()
+                s.clients.set(item['fields']['clients'])
+                sendings_to_create.append(s)
 
         Sending.objects.bulk_create(sendings_to_create)
