@@ -1,0 +1,75 @@
+[
+  {
+    "model": "main.client",
+    "pk": 1,
+    "fields": {
+      "name": "Ольга",
+      "email": "helen597@mail.ru"
+    }
+  },
+  {
+    "model": "main.client",
+    "pk": 2,
+    "fields": {
+      "name": "Дмитрий",
+      "email": "zmeeed_1@mail.ru"
+    }
+  },
+  {
+    "model": "main.client",
+    "pk": 3,
+    "fields": {
+      "name": "helen597",
+      "email": "helen597597@gmail.com"
+    }
+  },
+  {
+    "model": "main.client",
+    "pk": 4,
+    "fields": {
+      "name": "test",
+      "email": "test@gmail.ru"
+    }
+  },
+  {
+    "model": "main.client",
+    "pk": 5,
+    "fields": {
+      "name": "fabrika",
+      "email": "fabrika-nakleek@yandex.ru"
+    }
+  },
+
+  {
+    "model": "main.message",
+    "pk": 1,
+    "fields": {
+      "theme": "Диск",
+      "text": "Ваш системный диск переполнен."
+    }
+  },
+  {
+    "model": "main.message",
+    "pk": 2,
+    "fields": {
+      "theme": "Наклейки",
+      "text": "Предлагаем вашему вниманию наклейки на заднее стекло автомобиля"
+    }
+  },
+  {
+    "model": "main.message",
+    "pk": 3,
+    "fields": {
+      "theme": "Тест",
+      "text": "Это тестовое сообщение.\nНа него отвечать не нужно."
+    }
+  },
+  {
+    "model": "main.sending",
+    "pk": 1,
+    "fields": {
+      "message": Message.objects.get(theme="Тест"),
+      "clients": Client.objects.all()
+    }
+  }
+]
