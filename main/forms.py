@@ -26,7 +26,7 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
     # весь необходимый функционал, который нужно настроить
     class Meta:
         model = Message
-        fields = '__all__'
+        exclude = ('owner', )
 
     def clean_theme(self):
         cleaned_data = self.cleaned_data.get('theme')
@@ -53,18 +53,5 @@ class ClientForm(StyleFormMixin, forms.ModelForm):
     # Наследуемся от специального класса форм, который предоставляет
     # весь необходимый функционал, который нужно настроить
     class Meta:
-        model = Sending
-        fields = '__all__'
-#
-#
-# class ProductModerationForm(ProductForm):
-#     class Meta:
-#         model = Product
-#         fields = ('category', 'description', 'is_published', )
-#
-#
-# class VersionForm(StyleFormMixin, forms.ModelForm):
-#     class Meta:
-#         model = Version
-#         # exclude = ('product', )
-#         fields = '__all__'
+        model = Client
+        exclude = ('owner', )

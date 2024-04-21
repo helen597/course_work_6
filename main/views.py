@@ -13,8 +13,8 @@ class SendingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        # if not self.request.user.is_staff:
-        #     queryset = queryset.filter(owner=self.request.user)
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(owner=self.request.user)
         return queryset
 
 
@@ -22,17 +22,34 @@ class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = 'main/message_list.html'
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(owner=self.request.user)
+        return queryset
+
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = 'main/client_list.html'
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(owner=self.request.user)
+        return queryset
+
 
 class SendingDetailView(DetailView):
     model = Sending
     template_name = 'main/sending_detail.html'
-    
-    
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['clients'] = list(self.object.clients.all())
+        return context_data
+
+
 class MessageDetailView(DetailView):
     model = Message
     template_name = 'main/message_detail.html'
@@ -64,11 +81,11 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('users:login')
     redirect_field_name = "redirect_to"
 
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     self.object.owner = self.request.user
-    #     self.object.save()
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
@@ -78,11 +95,11 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('users:login')
     redirect_field_name = "redirect_to"
 
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     self.object.owner = self.request.user
-    #     self.object.save()
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class SendingUpdateView(LoginRequiredMixin, UpdateView):
@@ -98,14 +115,6 @@ class SendingUpdateView(LoginRequiredMixin, UpdateView):
             return self.object
         raise PermissionDenied
 
-    # def get_context_data(self, **kwargs):
-    #     context_data = super().get_context_data(**kwargs)
-    #     VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
-    #     if self.request.method == 'POST':
-    #         context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
-    #     else:
-    #         context_data['formset'] = VersionFormset(instance=self.object)
-    #     return context_data
 
     def form_valid(self, form):
         context_data = self.get_context_data()
