@@ -2,8 +2,8 @@ from main import apps
 from django.urls import path
 from django.views.decorators.cache import cache_page
 from main.views import SendingListView, MessageListView, ClientListView, SendingDetailView, MessageDetailView, \
-    ClientDetailView
-
+    ClientDetailView, SendingCreateView, MessageCreateView, ClientCreateView, SendingUpdateView, SendingDeleteView, \
+    MessageUpdateView, MessageDeleteView, ClientUpdateView, ClientDeleteView
 
 app_name = apps.MainConfig.name
 
@@ -14,8 +14,14 @@ urlpatterns = [
     path('sending/<int:pk>/', cache_page(60)(SendingDetailView.as_view()), name='sending_detail'),
     path('message/<int:pk>/', cache_page(60)(MessageDetailView.as_view()), name='message_detail'),
     path('client/<int:pk>/', cache_page(60)(ClientDetailView.as_view()), name='client_detail'),
-    # path('catalog/create/', ProductCreateView.as_view(), name='product_create'),
-    # path('catalog/<int:pk>/update/', ProductUpdateView.as_view(), name='product_update'),
-    # path('catalog/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
+    path('sending/create/', SendingCreateView.as_view(), name='sending_create'),
+    path('message/create/', MessageCreateView.as_view(), name='message_create'),
+    path('client/create/', ClientCreateView.as_view(), name='client_create'),
+    path('sending/<int:pk>/update/', SendingUpdateView.as_view(), name='sending_update'),
+    path('message/<int:pk>/update/', MessageUpdateView.as_view(), name='message_update'),
+    path('client/<int:pk>/update/', ClientUpdateView.as_view(), name='client_update'),
+    path('sending/<int:pk>/delete/', SendingDeleteView.as_view(), name='sending_delete'),
+    path('message/<int:pk>/delete/', MessageDeleteView.as_view(), name='message_delete'),
+    path('client/<int:pk>/delete/', ClientDeleteView.as_view(), name='client_delete'),
     # path('catalog/<int:pk>/moderate', ProductModerationView.as_view(), name='product_moderation'),
 ]

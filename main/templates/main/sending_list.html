@@ -2,9 +2,7 @@
 {% load mediapath_tag %}
 {% block content %}
 <div class="col-12 mb-5">
-    {% if perms.main.add_sending %}
-        <a class="p-2 btn btn-outline-primary" href="/sending/create/">Создать рассылку</a>
-    {% endif %}
+    <a class="p-2 btn btn-outline-primary" href="/sending/create/">Создать рассылку</a>
     {% for object in object_list %}
         <div class="row">
             <div class="card">
