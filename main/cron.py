@@ -10,7 +10,7 @@ def my_scheduled_job():
     zone = pytz.timezone(settings.TIME_ZONE)
     current_datetime = datetime.now(zone)
 
-    sendings = Sending.objects.all().filter(status='created').filter(is_active=True).filter(start_at__lte=current_datetime).filter(finish_at__gte=current_datetime)
+    sendings = Sending.objects.all().filter(status='создана').filter(is_active=True).filter(start_at__lte=current_datetime).filter(finish_at__gte=current_datetime)
     print(sendings)
     print(current_datetime)
     for sending in sendings:

@@ -1,9 +1,12 @@
 from datetime import datetime, timedelta
+import pytz
 from django.db import models
 from config import settings
 
 
 NULLABLE = {'null': 'True', 'blank': 'True'}
+zone = pytz.timezone(settings.TIME_ZONE)
+current_datetime = datetime.now(zone)
 
 
 # Create your models here.
@@ -49,8 +52,8 @@ class Sending(models.Model):
     clients = models.ManyToManyField(Client, verbose_name='клиенты', **NULLABLE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь',
                               **NULLABLE)
-    start_at = models.DateTimeField(default=datetime.now, verbose_name='дата начала')
-    finish_at = models.DateTimeField(default=datetime.now()+timedelta(days=30), verbose_name='дата окончания')
+    start_at = models.DateTimeField(default=current_datetime, verbose_name='дата начала')
+    finish_at = models.DateTimeField(default=current_datetime+timedelta(days=30), verbose_name='дата окончания')
     is_active = models.BooleanField(default=True, verbose_name='активна')
 
     def __str__(self):
