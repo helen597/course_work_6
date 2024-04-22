@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'main',
     'blog',
     'users',
-    'django_apscheduler',
+    # 'django_apscheduler',
     'django_crontab'
 ]
 
@@ -159,7 +159,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
 CRONJOBS = [
-    ('*/1 * * * *', 'main.cron.my_job', ['arg1', 'arg2'], {'verbose': 0}),
+    ('*/1 * * * *', 'main.cron.my_scheduled_job'),
     ('0   4 * * *', 'django.core.management.call_command', ['clearsessions']),
 ]
 
