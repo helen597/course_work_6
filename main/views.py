@@ -19,13 +19,13 @@ class SendingListView(LoginRequiredMixin, ListView):
 
 
 class TrialListView(LoginRequiredMixin, ListView):
-    model = Sending
-    # model = Trial
+    # model = Sending
+    model = Trial
     template_name = 'main/trial_list.html'
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
-        trials = Trial.objects.filter(sending=self.get_object())
+        trials = Trial.objects.all()
         context_data['trials'] = trials
         return context_data
 
