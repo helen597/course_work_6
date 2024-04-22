@@ -136,16 +136,16 @@ class SendingUpdateView(LoginRequiredMixin, UpdateView):
     #         context_data['formset'] = VersionFormset(instance=self.object)
     #     return context_data
 
-    def form_valid(self, form):
-        context_data = self.get_context_data()
-        formset = context_data['formset']
-        if form.is_valid() and formset.is_valid():
-            self.object = form.save()
-            formset.instance=self.object
-            formset.save()
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
+    # def form_valid(self, form):
+    #     context_data = self.get_context_data()
+    #     formset = context_data['formset']
+    #     if form.is_valid() and formset.is_valid():
+    #         self.object = form.save()
+    #         formset.instance=self.object
+    #         formset.save()
+    #         return super().form_valid(form)
+    #     else:
+    #         return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):

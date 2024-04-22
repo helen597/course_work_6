@@ -1,6 +1,6 @@
 from time import sleep
 from django.apps import AppConfig
-from main.management.commands.runapscheduler import start
+# from main.management.commands.runapscheduler import start
 
 
 class MainConfig(AppConfig):
