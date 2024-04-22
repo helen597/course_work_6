@@ -1,4 +1,5 @@
 import logging
+import smtplib
 from datetime import timedelta, datetime
 import pytz
 from django.core.mail import send_mail
@@ -34,19 +35,24 @@ def my_job():
         sending.save()
         email_list = [client.email for client in sending.clients.all()]
 
-        result = send_mail(
-            subject=sending.message.theme,
-            message=sending.message.text,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=email_list,
-            fail_silently=False,
-        )
+        try:
+            server_response = send_mail(
+                subject=sending.message.theme,
+                message=sending.message.text,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=email_list,
+                fail_silently=False,
+            )
 
-        trial = Trial(sending=sending, status=result)
-        trial.save()
+            trial = Trial(sending=sending, status=server_response, server_response=server_response)
+            trial.save()
 
-        if not sending.sent_at and result:
-            sending.sent_at = current_datetime
+            if not sending.sent_at:
+                sending.sent_at = current_datetime
+
+        except smtplib.SMTPException as e:
+            trial = Trial(sending=sending, status=server_response, server_response=e)
+            trial.save()
 
         if sending.period == 'раз в день':
             sending.start_at = trial.last_tried_at + timedelta(days=1)
