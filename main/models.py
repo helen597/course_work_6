@@ -60,6 +60,9 @@ class Sending(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ('sent_at',)
+        permissions = [
+            ("set_active", "Can deactivate sending")
+        ]
 
 
 class Trial(models.Model):
