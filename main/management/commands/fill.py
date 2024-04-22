@@ -1,9 +1,9 @@
-import os
 from django.core.management import BaseCommand
 import json
 from django.db import connection
 
 from main.models import Client, Message, Sending
+from users.models import User
 
 
 class Command(BaseCommand):
@@ -11,6 +11,8 @@ class Command(BaseCommand):
 
         with connection.cursor() as cursor:
             cursor.execute('TRUNCATE TABLE main_message RESTART IDENTITY CASCADE;')
+            cursor.execute('TRUNCATE TABLE main_sending RESTART IDENTITY CASCADE;')
+            cursor.execute('TRUNCATE TABLE main_client RESTART IDENTITY CASCADE;')
 
         Client.objects.all().delete()
         Message.objects.all().delete()
@@ -25,9 +27,12 @@ class Command(BaseCommand):
 
         for item in data:
             if item["model"] == "main.client":
-                clients_to_create.append(Client(**item['fields']))
+                name, email, owner = item['fields']['name'], item['fields']['email'], item['fields']['owner']
+                clients_to_create.append(Client(name, email, User.objects.get(pk=owner)))
             elif item["model"] == "main.message":
-                messages_to_create.append(Message(**item['fields']))
+                theme, text, owner = item['fields']['theme'], item['fields']['text'], item['fields']['owner']
+                print(theme, text, owner)
+                messages_to_create.append(Message(theme, text, User.objects.get(pk=owner)))
 
         Client.objects.bulk_create(clients_to_create)
         print(clients_to_create)
