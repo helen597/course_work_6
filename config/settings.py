@@ -158,6 +158,11 @@ EMAIL_SERVER = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
+CRONJOBS = [
+    ('*/1 * * * *', 'main.cron.my_job', ['arg1', 'arg2'], {'verbose': 0}),
+    ('0   4 * * *', 'django.core.management.call_command', ['clearsessions']),
+]
+
 CACHE_ENABLED = os.getenv("CACHE_ENABLED") == 'True'
 
 if CACHE_ENABLED:
