@@ -20,7 +20,7 @@
             {% if object.clients %}
                 <p>Список получателей:</p>
                 {% for client in clients %}
-                    <p>{{ client }}<p>
+                    <p>- {{ client }}<p>
                 {% endfor %}
             {% endif %}
             {% if perms.main.change_sending or sending.owner == request.user %}

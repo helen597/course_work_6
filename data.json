@@ -1,19 +1,19 @@
 [
   {
     "model": "main.client",
-    "pk": 3,
+    "pk": 1,
     "fields": {
-      "name": "Ольга",
-      "email": "helen597@mail.ru",
+      "name": "test",
+      "email": "test@gmail.ru",
       "owner": 2
     }
   },
   {
     "model": "main.client",
-    "pk": 4,
+    "pk": 2,
     "fields": {
-      "name": "ZMEEED",
-      "email": "zmeeed_1@mail.ru",
+      "name": "Ольга",
+      "email": "helen597@mail.ru",
       "owner": 2
     }
   },
@@ -28,10 +28,10 @@
   },
   {
     "model": "main.client",
-    "pk": 1,
+    "pk": 4,
     "fields": {
-      "name": "test",
-      "email": "test@gmail.ru",
+      "name": "ZMEEED",
+      "email": "zmeeed_1@mail.ru",
       "owner": 2
     }
   },

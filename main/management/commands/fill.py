@@ -23,26 +23,22 @@ class Command(BaseCommand):
 
         clients_to_create = []
         messages_to_create = []
-        sendings_to_create = []
 
         for item in data:
             if item["model"] == "main.client":
                 name, email, owner = item['fields']['name'], item['fields']['email'], item['fields']['owner']
-                clients_to_create.append(Client(name, email, User.objects.get(pk=owner)))
+                clients_to_create.append(Client(name=name, email=email, owner=User.objects.get(pk=owner)))
             elif item["model"] == "main.message":
                 theme, text, owner = item['fields']['theme'], item['fields']['text'], item['fields']['owner']
-                messages_to_create.append(Message(theme, text, User.objects.get(pk=owner)))
-        print(clients_to_create)
-        print(messages_to_create)
+                messages_to_create.append(Message(theme=theme, text=text, owner=User.objects.get(pk=owner)))
+
         Client.objects.bulk_create(clients_to_create)
         Message.objects.bulk_create(messages_to_create)
 
         for item in data:
             if item["model"] == "main.sending":
                 message = Message.objects.get(pk=item['fields']['message'])
-                s = Sending(message=message)
+                owner = User.objects.get(pk=item['fields']['owner'])
+                s = Sending(message=message, owner=owner)
                 s.save()
                 s.clients.set(item['fields']['clients'])
-                sendings_to_create.append(s)
-
-        Sending.objects.bulk_create(sendings_to_create)
