@@ -44,7 +44,7 @@ class Sending(models.Model):
     sent_at = models.DateTimeField(verbose_name='дата и время первой отправки', **NULLABLE)
     period_choices = {"раз в день": "раз в день", "раз в неделю": "раз в неделю", "раз в месяц": "раз в месяц"}
     period = models.CharField(max_length=12, choices=period_choices, default="раз в месяц", verbose_name='периодичность')
-    status_choices = {"created": "создана", "executed": "запущена", "finished": "завершена"}
+    status_choices = {"created": "создана", "executing": "запущена", "finished": "завершена"}
     status = models.CharField(max_length=15, choices=status_choices, default="создана", verbose_name='статус')
     message = models.ForeignKey("Message", on_delete=models.CASCADE, verbose_name='сообщение', **NULLABLE)
     clients = models.ManyToManyField(Client, verbose_name='клиенты', **NULLABLE)
@@ -67,7 +67,7 @@ class Trial(models.Model):
     sending = models.ForeignKey("Sending", on_delete=models.CASCADE, verbose_name='рассылка')
     last_tried_at = models.DateTimeField(auto_now_add=True, verbose_name='последняя попытка')
     status = models.BooleanField(default=False, verbose_name='статус')
-    server_response = models.CharField(verbose_name='ответ почтового сервера')
+    server_response = models.CharField(verbose_name='ответ почтового сервера', **NULLABLE)
 
     def __str__(self):
         return f'{self.sending} {self.last_tried_at}'
