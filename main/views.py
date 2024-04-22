@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from main.forms import SendingForm, MessageForm, ClientForm
-from main.models import Sending, Message, Client
+from main.models import Sending, Message, Client, Trial
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 
@@ -16,6 +16,18 @@ class SendingListView(LoginRequiredMixin, ListView):
         if not self.request.user.is_staff:
             queryset = queryset.filter(owner=self.request.user)
         return queryset
+
+
+class TrialListView(LoginRequiredMixin, ListView):
+    model = Sending
+    # model = Trial
+    template_name = 'main/trial_list.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        trials = Trial.objects.filter(sending=self.get_object())
+        context_data['trials'] = trials
+        return context_data
 
 
 class MessageListView(LoginRequiredMixin, ListView):
@@ -115,6 +127,14 @@ class SendingUpdateView(LoginRequiredMixin, UpdateView):
             return self.object
         raise PermissionDenied
 
+    # def get_context_data(self, **kwargs):
+    #     context_data = super().get_context_data(**kwargs)
+    #     VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+    #     if self.request.method == 'POST':
+    #         context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
+    #     else:
+    #         context_data['formset'] = VersionFormset(instance=self.object)
+    #     return context_data
 
     def form_valid(self, form):
         context_data = self.get_context_data()

@@ -67,10 +67,15 @@ class Trial(models.Model):
     sending = models.ForeignKey("Sending", on_delete=models.CASCADE, verbose_name='рассылка')
     last_tried_at = models.DateTimeField(auto_now_add=True, verbose_name='последняя попытка')
     status = models.BooleanField(default=False, verbose_name='статус')
-    server_response = models.CharField(verbose_name='ответ почтового сервера', **NULLABLE)
+    server_response = models.CharField(verbose_name='ответ почтового сервера', **NULLABLE )
 
     def __str__(self):
-        return f'{self.sending} {self.last_tried_at}'
+        str = f'{self.sending} {self.last_tried_at} '
+        if self.status:
+            str += 'успешная попытка отправки'
+        else:
+            str += f'ошибка: {self.server_response}'
+        return str
 
     class Meta:
         verbose_name = 'Попытка'
