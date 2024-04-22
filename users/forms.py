@@ -22,3 +22,9 @@ class UserProfileForm(StyleFormMixin, UserChangeForm):
 
 class ChangeUserPasswordForm(StyleFormMixin, PasswordResetForm):
     pass
+
+
+class UserModerationForm(UserProfileForm):
+    class Meta:
+        model = User
+        fields = ('is_active',)

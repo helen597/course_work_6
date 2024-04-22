@@ -2,15 +2,15 @@ import random
 import secrets
 import string
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 
 from config import settings
-from users.forms import UserRegisterForm, UserProfileForm, ChangeUserPasswordForm
+from users.forms import UserRegisterForm, UserProfileForm, ChangeUserPasswordForm, UserModerationForm
 from users.models import User
 
 
@@ -89,12 +89,6 @@ class ResetUserPasswordView(PasswordResetView):
     form_class = ChangeUserPasswordForm
     success_url = reverse_lazy('users:login')
 
-    # def get_object(self, queryset=None):
-    #     return self.request.user
-
-    # def get_success_url(self):
-    #     return reverse_lazy('users:login')
-
     def form_valid(self, form):
         if self.request.method == 'POST':
             email = self.request.POST['email']
@@ -118,5 +112,17 @@ class ResetUserPasswordView(PasswordResetView):
         return super().form_valid(form)
 
 
-class UserPasswordResetConfirmView(PasswordResetConfirmView):
-    pass
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = User
+    template_name = 'users/user_list.html'
+    permission_required = ('users.view_user', )
+
+
+class UserModerationView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = User
+    form_class = UserModerationForm
+    template_name = 'users/user_form.html'
+    permission_required = ('users.set_active',)
+
+    def get_success_url(self):
+        return reverse_lazy('users:user_list', kwargs={'pk': self.object.pk})
