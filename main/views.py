@@ -1,8 +1,8 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from main.forms import SendingForm, MessageForm, ClientForm
+from main.forms import SendingForm, MessageForm, ClientForm, SendingModerationForm
 from main.models import Sending, Message, Client, Trial
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 
 
@@ -127,26 +127,6 @@ class SendingUpdateView(LoginRequiredMixin, UpdateView):
             return self.object
         raise PermissionDenied
 
-    # def get_context_data(self, **kwargs):
-    #     context_data = super().get_context_data(**kwargs)
-    #     VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
-    #     if self.request.method == 'POST':
-    #         context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
-    #     else:
-    #         context_data['formset'] = VersionFormset(instance=self.object)
-    #     return context_data
-
-    # def form_valid(self, form):
-    #     context_data = self.get_context_data()
-    #     formset = context_data['formset']
-    #     if form.is_valid() and formset.is_valid():
-    #         self.object = form.save()
-    #         formset.instance=self.object
-    #         formset.save()
-    #         return super().form_valid(form)
-    #     else:
-    #         return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = Message
@@ -183,3 +163,13 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('main:client_list')
     login_url = reverse_lazy('users:login')
     redirect_field_name = "redirect_to"
+
+
+class SendingModerationView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Sending
+    form_class = SendingModerationForm
+    template_name = 'main/sending_form.html'
+    permission_required = ('main.set_active',)
+
+    def get_success_url(self):
+        return reverse_lazy('main:sending_detail', kwargs={'pk': self.object.pk})

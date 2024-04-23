@@ -125,4 +125,4 @@ class UserModerationView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
     permission_required = ('users.set_active',)
 
     def get_success_url(self):
-        return reverse_lazy('users:user_list', kwargs={'pk': self.object.pk})
+        return reverse_lazy('users:users')

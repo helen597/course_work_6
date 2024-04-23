@@ -14,16 +14,12 @@ class StyleFormMixin:
 
 
 class SendingForm(StyleFormMixin, forms.ModelForm):
-    # Наследуемся от специального класса форм, который предоставляет
-    # весь необходимый функционал, который нужно настроить
     class Meta:
         model = Sending
         exclude = ('sent_at', 'status', 'owner', )
 
 
 class MessageForm(StyleFormMixin, forms.ModelForm):
-    # Наследуемся от специального класса форм, который предоставляет
-    # весь необходимый функционал, который нужно настроить
     class Meta:
         model = Message
         exclude = ('owner', )
@@ -50,8 +46,12 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
-    # Наследуемся от специального класса форм, который предоставляет
-    # весь необходимый функционал, который нужно настроить
     class Meta:
         model = Client
         exclude = ('owner', )
+
+
+class SendingModerationForm(SendingForm):
+    class Meta:
+        model = Sending
+        fields = ('is_active', )
