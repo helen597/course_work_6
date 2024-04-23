@@ -23,14 +23,16 @@
                     <p>- {{ client }}<p>
                 {% endfor %}
             {% endif %}
-            <div class="col-12">
-                <a href="{% url 'main:trial_list' object.pk %}" class="btn btn-outline-warning">История рассылки</a>
-            </div>
+            <a href="{% url 'main:trial_list' object.pk %}" class="btn btn-warning">История рассылки</a>
             {% if perms.main.change_sending or sending.owner == request.user %}
-                <a href="{% url 'main:sending_update' object.pk %}" class="btn btn-outline-warning">Изменить</a>
+                <a href="{% url 'main:sending_update' object.pk %}" class="btn btn-success">Изменить</a>
             {% endif %}
             {% if perms.main.delete_sending or sending.owner == request.user %}
-                <a href="{% url 'main:sending_delete' object.pk %}" class="btn btn-outline-danger">Удалить</a>
+                <a href="{% url 'main:sending_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
+            {% if perms.main.set_active %}
+            <a href="{% url 'main:sending_moderation' object.pk  %}" type="button"
+                   class="btn btn-danger">Изменить активность</a>
             {% endif %}
         </div>
     </div>
