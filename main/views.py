@@ -1,5 +1,7 @@
+import random
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from blog.models import Blog
 from main.forms import SendingForm, MessageForm, ClientForm, SendingModerationForm
 from main.models import Sending, Message, Client, Trial
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -7,6 +9,21 @@ from django.core.exceptions import PermissionDenied
 
 
 # Create your views here.
+class HomepageView(ListView):
+    model = Sending
+    template_name = 'main/home.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['sendings_count'] = Sending.objects.all().count()
+        context_data['active_sendings_count'] = Sending.objects.filter(is_active=True).count()
+        blog_list = list(Blog.objects.all())
+        random.shuffle(blog_list)
+        context_data['blog_list'] = blog_list[:3]
+        context_data['clients_count'] = Client.objects.all().count()
+        return context_data
+
+
 class SendingListView(LoginRequiredMixin, ListView):
     model = Sending
     template_name = 'main/sending_list.html'

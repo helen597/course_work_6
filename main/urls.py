@@ -3,12 +3,14 @@ from django.urls import path
 from django.views.decorators.cache import cache_page
 from main.views import SendingListView, MessageListView, ClientListView, SendingDetailView, MessageDetailView, \
     ClientDetailView, SendingCreateView, MessageCreateView, ClientCreateView, SendingUpdateView, SendingDeleteView, \
-    MessageUpdateView, MessageDeleteView, ClientUpdateView, ClientDeleteView, TrialListView, SendingModerationView
+    MessageUpdateView, MessageDeleteView, ClientUpdateView, ClientDeleteView, TrialListView, SendingModerationView, \
+    HomepageView
 
 app_name = apps.MainConfig.name
 
 urlpatterns = [
-    path('', SendingListView.as_view(), name='sending_list'),
+    path('', cache_page(60)(HomepageView.as_view()), name='homepage'),
+    path('sendings/', SendingListView.as_view(), name='sending_list'),
     path('messages/', MessageListView.as_view(), name='message_list'),
     path('clients/', ClientListView.as_view(), name='client_list'),
     path('sending/<int:pk>/', cache_page(60)(SendingDetailView.as_view()), name='sending_detail'),

@@ -3,10 +3,12 @@
 {% block content %}
 <div class="col-12">
     <a class="p-2 btn btn-outline-primary" href="/blog/create/">Создать запись</a>
+</div>
+<div class="col-12">
     {% for object in object_list %}
         <div class="row">
             <div class="col-4">
-                <img width="150" src="{% mediapath object.image %}" alt="...">
+                <img width="300" src="{% mediapath object.image %}" alt="...">
             </div>
             <div class="col-8">
                 <div class="card">
